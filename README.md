@@ -4,7 +4,7 @@ A simple example of how to use MinIO metadata to search for files in a bucket us
 
 ## :rocket: How to run
 
-First, start your [MinIO](https://min.io/download#), for example, using using [docker](https://www.docker.com/get-started):
+First, start your [MinIO](https://min.io/download#), for example, using [docker](https://www.docker.com/get-started):
 
 ```bash
 docker run -p 9000:9000 minio/minio server /data
