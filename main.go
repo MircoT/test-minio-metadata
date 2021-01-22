@@ -38,16 +38,19 @@ func upload(minioClient *minio.Client) error {
 	objectName := "sample_data.txt"
 	filePath := "sample_data.txt"
 	contentType := "text/plain"
+
 	metadata := make(map[string]string)
 	tags := make(map[string]string)
 
+	// Add some metadata
 	metadata["insertedBy"] = "me"
 	metadata["content"] = "text"
 	metadata["source"] = "the world"
 
+	// Add a tag
 	tags["raw"] = "txt"
 
-	// Upload the zip file with FPutObject
+	// Upload the sample file with FPutObject
 	info, err := minioClient.FPutObject(ctx,
 		bucketName,
 		objectName,
