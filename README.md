@@ -15,3 +15,5 @@ Then, run the program:
 ```bash
 go run main.go
 ```
+
+As a result, you will have the file names of the object that meet the specifications required by research, using only the User Metadata and User Tags inserted during the upload.
