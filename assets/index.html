@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>MinIO Meta Finder</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css" />
+</head>
+
+<body>
+    <section class="section">
+        <div id="app" class="container">
+            <h1 class="title">MinIO Meta Finder</h1>
+            <div class="field">
+                <div class="control" v-bind:class="{ 'is-loading': isLoading }">
+                    <input class="input" type="text" v-on:change="event => search(event)" v-model="searchString"
+                        placeholder="Search for something..." />
+                </div>
+            </div>
+            <hr />
+            <table v-if="results.length" class="table table is-fullwidth">
+                <thead>
+                    <tr>
+                        <th><abbr title="file">File</abbr></th>
+                        <th><abbr title="Metadata">Metadata</abbr></th>
+                        <th><abbr title="Tag">Tag</abbr></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="result in results">
+                        <td>
+                            <a v-bind:href="result.url" target="_blank">{{ result.filename }}</a>
+                        </td>
+                        <td>
+                            <div class="tags">
+                                <span class="tag is-info"
+                                    v-for="data in result.metadata.split(';').slice(0, -1)"
+                                    v-bind:class="{ 'is-rounded': inMatch(result.match, data), 'is-light': notInMatch(result.match, data) }"
+                                    >{{data}}</span>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="tags">
+                                <span class="tag is-warning"
+                                    v-for="data in result.tags.split(';').slice(0, -1)"
+                                    v-bind:class="{ 'is-rounded': inMatch(result.match, data), 'is-light': notInMatch(result.match, data) }"
+                                    >{{data}}</span>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <h4 v-else class="title">No results...</h4>
+        </div>
+    </section>
+    <script src="/js/fontawesome.js"></script>
+    <!-- development version, includes helpful console warnings -->
+    <script src="/js/vue.js" crossorigin="anonymous"></script>
+    <script>
+        var app = new Vue({
+            el: "#app",
+            data: {
+                isLoading: false,
+                searchString: "",
+                results: [],
+            },
+            methods: {
+                inMatch: function(list, data) {
+                    if (list == null || list.length === 0) return false
+                    console.log(list.indexOf(data))
+                    return list.indexOf(data) > -1
+                },
+                notInMatch: function(list, data) {
+                    if (list == null || list.length === 0) return true
+                    return list.indexOf(data) === -1
+                },
+                search: function (event) {
+                    console.log(this.searchString);
+
+                    const app = this;
+                    app.isLoading = true;
+
+                    fetch("/search?searchString=" + this.searchString)
+                        .then((response) => response.json())
+                        .then((newData) => {
+                            app.results = app.results.splice(0, app.results.lenght);
+                            console.log(newData);
+
+                            for (let idx = 0; idx < newData.results.length; idx++) {
+                                let currentValue = newData.results[idx];
+                                console.log(currentValue);
+                                app.results.push(currentValue);
+                            }
+
+                            app.isLoading = false;
+                        });
+                },
+            },
+        });
+    </script>
+</body>
+
+</html>
