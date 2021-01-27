@@ -7,13 +7,23 @@ A simple example of how to use MinIO metadata to search for files in a bucket us
 First, start your [MinIO](https://min.io/download#), for example, using [docker](https://www.docker.com/get-started):
 
 ```bash
-docker run -p 9000:9000 minio/minio server /data
+docker run --rm -p 9000:9000 minio/minio server /data
+```
+
+Prepare the assets:
+
+```bash
+go mod download
 ```
 
 Then, run the program:
 
 ```bash
-go run main.go
+go run ./...
 ```
 
-As a result, you will have the file names of the object that meet the specifications required by research, using only the User Metadata and User Tags inserted during the upload.
+As a result, you will have the file names of the object that meet the specifications required by research, using only the User Metadata and User Tags inserted during the upload. Try the example locally at the following url: [preview](http://localhost:9009)
+
+The result should be like the following:
+
+![preview](preview.gif)
