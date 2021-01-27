@@ -14,7 +14,7 @@
             <h1 class="title">MinIO Meta Finder</h1>
             <div class="field">
                 <div class="control" v-bind:class="{ 'is-loading': isLoading }">
-                    <input class="input" type="text" v-on:change="event => search(event)" v-model="searchString"
+                    <input class="input" type="text" v-on:input="event => search(event)" v-model.trim="searchString"
                         placeholder="Search for something..." />
                 </div>
             </div>
