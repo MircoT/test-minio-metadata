@@ -10,7 +10,7 @@ First, start your [MinIO](https://min.io/download#), for example, using [docker]
 docker run --rm -p 9000:9000 minio/minio server /data
 ```
 
-Prepare the assets:
+Get the external modules:
 
 ```bash
 go mod download
